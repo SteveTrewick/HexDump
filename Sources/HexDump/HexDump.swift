@@ -1,6 +1,21 @@
 import Foundation
 
 
+
+public func memhex<T: BinaryInteger>(_ value: T) -> String {
+  
+  var value = value
+  var hex = ""
+  
+  withUnsafeBytes(of: &value) { bytes in
+    for byte in bytes {
+      hex += String(format:"%02x", byte) + " "
+    }
+  }
+  return hex
+}
+
+
 public struct HexDump {
   
   /*
