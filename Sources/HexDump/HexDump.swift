@@ -42,24 +42,45 @@ public struct HexDump {
     }
   }
   
+  
+  public enum Format {
+    case regular, array
+  }
+  
   /*
    TODO: --
       make this work for BinaryInteger please, it will be a bit more involved, but
       hey, you can do it
    */
-  public func dump (bytes: [UInt8], width: Int = 16 ) -> String {
+  public func dump (bytes: [UInt8], format: Format = .regular, width: Int = 16 ) -> String {
+    
+    var pad = 3
+    
+    switch format {
+      case .regular: break
+      case .array  : pad += 3  // 0x ,
+    }
     
     var hexdump : [String] = []
     
     for line in chunk(bytes: bytes, size: width) {
       
+      
+      
+      
       // hexify
-      var hexes = line.map { String(format: "%02x", $0) }
-                      .joined(separator: " ")
+      var hexes = line.map {
+        if case .array = format {
+          return "0x" + String(format: "%02x", $0) + ","
+        }
+        else {
+          return String(format: "%02x", $0)
+        }
+      }
+      .joined(separator: " ")
       
       // pad.
-      // each hex element takes up 2 chars plus a space
-      hexes += String(repeating: " ", count: (width - line.count) * 3)
+      hexes += String(repeating: " ", count: (width - line.count) * pad)
       
      
       let chars = line.map {
