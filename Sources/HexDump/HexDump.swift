@@ -52,7 +52,12 @@ public struct HexDump {
       make this work for BinaryInteger please, it will be a bit more involved, but
       hey, you can do it
    */
-  public func dump (bytes: [UInt8], format: Format = .regular, width: Int = 16 ) -> String {
+  
+  public func dump (_ data: Data, format: Format = .regular, width: Int = 16) -> String {
+    dump ( Array(data), format: format , width: width )
+  }
+  
+  public func dump (_ bytes: [UInt8], format: Format = .regular, width: Int = 16 ) -> String {
     
     var pad = 3
     
